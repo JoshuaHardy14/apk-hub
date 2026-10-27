@@ -1,0 +1,9 @@
+[
+  {
+    "id": "mobfighter",
+    "name": "MobFighter",
+    "description": "A Unity game for Android.",
+    "icon": "icons/mobfighter.svg",
+    "minAndroid": "7.1"
+  }
+]

@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+// The inner .page container supplies the side padding so the title lines up with the content.
+mat-toolbar {
+  padding: 0;
+}
+
+.brand {
+  color: inherit;
+  font: var(--mat-sys-title-large);
+  text-decoration: none;
+}
+
+main {
+  flex: 1;
+}
+
+.footer {
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
+  padding-block: 24px;
+}

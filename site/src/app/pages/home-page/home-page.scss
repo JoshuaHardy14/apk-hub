@@ -1,0 +1,40 @@
+.lead {
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 24px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+.app-link {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  gap: 16px;
+  padding: 16px 16px 0;
+  text-decoration: none;
+}
+
+.icon {
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.name {
+  display: block;
+  font: var(--mat-sys-title-medium);
+}
+
+.meta {
+  color: var(--mat-sys-on-surface-variant);
+  display: block;
+  font: var(--mat-sys-body-small);
+}
+
+mat-card-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+}

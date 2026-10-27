@@ -1,0 +1,78 @@
+<a mat-button routerLink="/">← All apps</a>
+
+@if (app(); as app) {
+  <header class="header">
+    <img class="icon" [src]="app.icon" alt="" width="96" height="96" />
+    <div>
+      <h1>{{ app.name }}</h1>
+      <p>{{ app.description }}</p>
+      <p class="muted">Requires Android {{ app.minAndroid }} or newer</p>
+    </div>
+  </header>
+
+  @if (app.latest; as latest) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <a mat-flat-button class="download" [href]="latest.apkUrl" download>
+          Download v{{ latest.version }}
+        </a>
+        <dl class="facts">
+          <dt>Size</dt>
+          <dd>{{ latest.sizeBytes | fileSize }}</dd>
+          <dt>Released</dt>
+          <dd>{{ latest.publishedAt | date: 'mediumDate' }}</dd>
+          <dt>File</dt>
+          <dd>{{ latest.apkName }}</dd>
+          @if (latest.sha256) {
+            <dt>SHA-256</dt>
+            <dd class="hash">{{ latest.sha256 }}</dd>
+          }
+        </dl>
+        @if (latest.notes) {
+          <h2>What's new</h2>
+          <p class="notes">{{ latest.notes }}</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <p>No builds have been published yet. Check back soon.</p>
+  }
+
+  @if (releases().length > 0) {
+    <h2>All versions</h2>
+    <div class="table-scroll">
+      <table class="history">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Released</th>
+            <th>Size</th>
+            <th><span class="visually-hidden">Download</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (release of releases(); track release.tag) {
+            <tr>
+              <td>
+                {{ release.version }}
+                @if (release.prerelease) {
+                  <span class="badge">pre-release</span>
+                }
+              </td>
+              <td>{{ release.publishedAt | date: 'mediumDate' }}</td>
+              <td>{{ release.sizeBytes | fileSize }}</td>
+              <td><a [href]="release.apkUrl" download>Download</a></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+} @else if (catalog.appsFile.hasValue()) {
+  <h1>App not found</h1>
+  <p>There's no app called "{{ id() }}". <a routerLink="/">See all apps</a>.</p>
+} @else if (catalog.appsFile.error()) {
+  <p class="error">Couldn't load this app. Try refreshing the page.</p>
+} @else {
+  <mat-progress-bar mode="indeterminate" />
+}

@@ -1,0 +1,60 @@
+// Angular Material theme. Learn more at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$magenta-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  // Follow the visitor's system light/dark setting.
+  color-scheme: light dark;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+h1 {
+  font: var(--mat-sys-headline-medium);
+}
+
+h2 {
+  font: var(--mat-sys-title-large);
+  margin-top: 32px;
+}
+
+a {
+  color: var(--mat-sys-primary);
+}
+
+.page {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 960px;
+  padding-inline: 16px;
+  width: 100%;
+}
+
+.error {
+  color: var(--mat-sys-error);
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

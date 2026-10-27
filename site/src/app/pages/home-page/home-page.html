@@ -1,0 +1,41 @@
+<h1>Downloads</h1>
+<p class="lead">The latest Android builds, ready to install.</p>
+
+@if (catalog.appsFile.hasValue()) {
+  <div class="grid">
+    @for (app of catalog.apps(); track app.id) {
+      <mat-card appearance="outlined">
+        <a class="app-link" [routerLink]="['/apps', app.id]">
+          <img class="icon" [src]="app.icon" alt="" width="64" height="64" />
+          <span>
+            <span class="name">{{ app.name }}</span>
+            <span class="meta">
+              @if (app.latest; as latest) {
+                v{{ latest.version }} · {{ latest.publishedAt | date: 'mediumDate' }}
+              } @else {
+                No builds yet
+              }
+            </span>
+          </span>
+        </a>
+        <mat-card-content>
+          <p>{{ app.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          @if (app.latest; as latest) {
+            <a mat-flat-button [href]="latest.apkUrl" download>
+              Download ({{ latest.sizeBytes | fileSize }})
+            </a>
+          }
+          <a mat-button [routerLink]="['/apps', app.id]">Details</a>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <p>No apps yet.</p>
+    }
+  </div>
+} @else if (catalog.appsFile.error()) {
+  <p class="error">Couldn't load the app list. Try refreshing the page.</p>
+} @else {
+  <mat-progress-bar mode="indeterminate" />
+}

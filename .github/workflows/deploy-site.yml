@@ -1,0 +1,72 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  # Releases are created by app repos with a PAT, so these events do fire.
+  release:
+    types: [published, edited, deleted]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; don't cancel a deploy that's already running.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Test catalog script
+        run: node --test 'scripts/*.test.mjs'
+
+      - name: Build catalog data
+        run: node scripts/build-catalog.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Test site
+        working-directory: site
+        run: npx ng test --watch=false
+
+      - name: Build site
+        working-directory: site
+        run: npx ng build
+
+      # GitHub Pages serves 404.html for unknown paths, which lets deep links like
+      # /apk-hub/apps/mobfighter boot the Angular app and route client-side.
+      - name: Add SPA fallback
+        run: cp site/dist/site/browser/index.html site/dist/site/browser/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist/site/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
