@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { HttpRequest, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
@@ -46,8 +46,11 @@ describe('HomePage', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
+  // The URL carries a changing cache-busting query string, so match on the path only.
+  const appsRequest = (request: HttpRequest<unknown>) => request.url === 'data/apps.json';
+
   it('lists apps with a download link to the latest APK', async () => {
-    const element = await render((http) => http.expectOne('data/apps.json').flush(appsFile));
+    const element = await render((http) => http.expectOne(appsRequest).flush(appsFile));
 
     expect(element.textContent).toContain('MobFighter');
     expect(element.textContent).toContain('v1.2.3');
@@ -58,7 +61,7 @@ describe('HomePage', () => {
 
   it('shows an error when the app list fails to load', async () => {
     const element = await render((http) =>
-      http.expectOne('data/apps.json').flush('', { status: 404, statusText: 'Not Found' }),
+      http.expectOne(appsRequest).flush('', { status: 404, statusText: 'Not Found' }),
     );
 
     expect(element.querySelector('.error')?.textContent).toContain("Couldn't load");

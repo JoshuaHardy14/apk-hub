@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { Catalog } from '../../catalog/catalog';
+import { cacheBuster, Catalog } from '../../catalog/catalog';
 import { ReleasesFile } from '../../catalog/catalog.models';
 import { FileSizePipe } from '../../catalog/file-size-pipe';
 
@@ -24,7 +24,9 @@ export class AppDetailPage {
   protected readonly app = computed(() => this.catalog.apps().find((app) => app.id === this.id()));
 
   protected readonly releasesFile = httpResource<ReleasesFile>(() =>
-    this.id() ? `data/releases/${this.id()}.json` : undefined,
+    this.id()
+      ? { url: `data/releases/${this.id()}.json`, params: { t: cacheBuster() } }
+      : undefined,
   );
   protected readonly releases = computed(() =>
     this.releasesFile.hasValue() ? this.releasesFile.value().releases : [],
