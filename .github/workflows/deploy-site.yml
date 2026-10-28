@@ -3,9 +3,8 @@ name: Deploy site
 on:
   push:
     branches: [main]
-  # Releases are created by app repos with a PAT, so these events do fire.
-  release:
-    types: [published, edited, deleted]
+  # Releases start this via release-redeploy.yml. Deploys must run on main: a Pages
+  # deployment from a release's tag ref reports success but never goes live.
   workflow_dispatch:
 
 permissions:

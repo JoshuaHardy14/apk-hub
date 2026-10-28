@@ -1,0 +1,21 @@
+name: Redeploy site on release
+
+# A Pages deployment made from a release's tag ref reports success but never becomes the
+# live site, so start the normal deploy on main instead. GITHUB_TOKEN may start
+# workflow_dispatch runs, so no extra token is needed.
+
+on:
+  release:
+    types: [published, edited, deleted]
+
+permissions:
+  actions: write
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start deploy-site on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-site.yml --repo "$GITHUB_REPOSITORY" --ref main
