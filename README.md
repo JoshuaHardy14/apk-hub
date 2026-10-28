@@ -4,7 +4,7 @@ A download site for my Android apps: **https://joshuahardy14.github.io/apk-hub/*
 
 - APKs are stored as **GitHub Releases** in this repo.
 - The **Angular** site in `site/` lists every app and its versions.
-- **GitHub Actions** rebuilds and redeploys the site to GitHub Pages whenever a release is published, edited or deleted, or `main` changes.
+- **GitHub Actions** rebuilds and redeploys the site to GitHub Pages from `main` whenever a release is published, edited or deleted, or `main` changes.
 
 ## How it fits together
 
@@ -12,7 +12,8 @@ A download site for my Android apps: **https://joshuahardy14.github.io/apk-hub/*
 app repo (e.g. ClaudeTest) ── push to main ──► build APK ──► gh release create mobfighter-v1.2.3 --repo JoshuaHardy14/apk-hub
                                                                               │
 apk-hub ◄─────────────────────────────────────────────────────────────────────┘
-  release event ──► scripts/build-catalog.mjs ──► site/public/data/*.json ──► ng build ──► GitHub Pages
+  release event ──► release-redeploy.yml ──► deploy-site.yml on main
+                   ──► scripts/build-catalog.mjs ──► site/public/data/*.json ──► ng build ──► GitHub Pages
 ```
 
 ### Release conventions
@@ -23,6 +24,8 @@ apk-hub ◄───────────────────────
 - Pre-releases are listed, but the "latest" download prefers the newest stable release
 
 Releases must be created with a PAT or GitHub App token (not an app repo's own `GITHUB_TOKEN`), or the `release` event won't trigger a deploy.
+
+Deploys always run from `main`. `release-redeploy.yml` reacts to the release and starts `deploy-site.yml` on `main`, because a Pages deployment made from a release's tag reports success but never becomes the live site.
 
 ## Adding an app
 
