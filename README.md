@@ -34,14 +34,22 @@ Deploys always run from `main`. `release-redeploy.yml` reacts to the release and
    {
      "id": "myapp",
      "name": "My App",
-     "description": "One line about the app.",
+     "tagline": "Optional short pitch shown under the name.",
+     "description": "A sentence or two about the app.",
      "icon": "icons/myapp.svg",
      "minAndroid": "7.1"
    }
    ```
    `id` must be lowercase letters, digits and dashes.
-2. Put the icon in `catalog/icons/` (SVG or PNG, square).
+2. Put the icon in `catalog/icons/` (SVG or PNG, square; pixel art is shown crisp).
 3. Have the app's build workflow publish releases here tagged `myapp-v<version>`.
+
+## Links you can share
+
+- App page: `https://joshuahardy14.github.io/apk-hub/apps/<appId>` (download button, install help, QR code, all versions)
+- Always the newest APK: `https://joshuahardy14.github.io/apk-hub/apps/<appId>/latest`
+
+Download counts come from GitHub and refresh on every deploy, plus once a day.
 
 ## Local development
 

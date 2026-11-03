@@ -12,9 +12,10 @@ const appsFile: AppsFile = {
       id: 'mobfighter',
       name: 'MobFighter',
       description: 'A Unity game for Android.',
-      icon: 'data/icons/mobfighter.svg',
+      icon: 'data/icons/mobfighter.png',
       minAndroid: '7.1',
       releaseCount: 1,
+      totalDownloads: 1234,
       latest: {
         version: '1.2.3',
         tag: 'mobfighter-v1.2.3',
@@ -24,6 +25,7 @@ const appsFile: AppsFile = {
         apkName: 'mobfighter-1.2.3.apk',
         apkUrl: 'https://example.com/mobfighter-1.2.3.apk',
         sizeBytes: 48_000_000,
+        downloads: 1234,
         sha256: null,
       },
     },
@@ -53,10 +55,11 @@ describe('HomePage', () => {
     const element = await render((http) => http.expectOne(appsRequest).flush(appsFile));
 
     expect(element.textContent).toContain('MobFighter');
-    expect(element.textContent).toContain('v1.2.3');
+    expect(element.textContent).toContain('1.2.3');
+    expect(element.textContent).toContain('45.8 MB');
+    expect(element.textContent).toContain('1,234');
     const download = element.querySelector<HTMLAnchorElement>('a[download]');
     expect(download?.href).toBe('https://example.com/mobfighter-1.2.3.apk');
-    expect(download?.textContent).toContain('45.8 MB');
   });
 
   it('shows an error when the app list fails to load', async () => {

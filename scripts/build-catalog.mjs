@@ -33,6 +33,9 @@ export function validateCatalog(apps) {
         throw new Error(`App ${JSON.stringify(app.id)} is missing "${field}"`);
       }
     }
+    if (app.tagline !== undefined && typeof app.tagline !== 'string') {
+      throw new Error(`App "${app.id}" has a tagline that is not text`);
+    }
     if (!appIdPattern.test(app.id)) {
       throw new Error(`App id "${app.id}" must be lowercase letters, digits and dashes`);
     }
@@ -65,9 +68,15 @@ export function toRelease(appId, githubRelease) {
     apkName: apk.name,
     apkUrl: apk.browser_download_url,
     sizeBytes: apk.size,
+    downloads: apk.download_count ?? 0,
     // GitHub computes a digest for newer uploads; older ones fall back to the .sha256 asset.
     sha256: apk.digest?.startsWith('sha256:') ? apk.digest.slice('sha256:'.length) : null,
   };
+}
+
+/** Every download of every version of an app. */
+export function totalDownloads(releases) {
+  return releases.reduce((total, release) => total + release.downloads, 0);
 }
 
 /** Newest first; the latest is the newest stable release, or the newest pre-release if none. */
@@ -133,11 +142,13 @@ function sampleReleases(app) {
     version,
     tag: `${app.id}-v${version}`,
     publishedAt: new Date(Date.UTC(2026, 9, 20 - index * 7)).toISOString(),
-    notes: `Sample release notes for ${version}.\n- Fixed a bug\n- Improved performance`,
+    notes:
+      '- New boss fight in the Crystal Caverns\n- Smoother touch controls\n- Bug fixes and improvements',
     prerelease: false,
     apkName: `${app.id}-${version}.apk`,
     apkUrl: '#sample-download',
     sizeBytes: 48_000_000 - index * 1_500_000,
+    downloads: 40 - index * 12,
     sha256: 'f'.repeat(64),
   }));
 }
@@ -174,6 +185,7 @@ async function main() {
       ...app,
       icon: `data/${app.icon}`,
       releaseCount: sorted.length,
+      totalDownloads: totalDownloads(sorted),
       latest,
     });
     console.log(`${app.id}: ${sorted.length} release(s), latest ${latest?.version ?? 'none'}`);
@@ -185,7 +197,8 @@ async function main() {
   });
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+// process.argv[1] is undefined when this module is imported from `node -e` or a REPL.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((error) => {
     console.error(error);
     process.exit(1);

@@ -1,0 +1,36 @@
+<section class="hero block" [attr.aria-label]="app().name">
+  <img class="icon pixelated" [src]="app().icon" alt="" width="176" height="176" />
+
+  <div class="body">
+    @if (headingLevel() === 1) {
+      <h1 class="name">{{ app().name }}</h1>
+    } @else {
+      <h2 class="name">{{ app().name }}</h2>
+    }
+    @if (app().tagline) {
+      <p class="tagline">{{ app().tagline }}</p>
+    }
+    <p class="description">{{ app().description }}</p>
+
+    @if (app().latest; as latest) {
+      <ul class="stats" aria-label="About this build">
+        <li><span class="stat-label">Version</span>{{ latest.version }}</li>
+        <li><span class="stat-label">Updated</span>{{ latest.publishedAt | date: 'd MMM' }}</li>
+        <li><span class="stat-label">Size</span>{{ latest.sizeBytes | fileSize }}</li>
+        <li><span class="stat-label">Downloads</span>{{ app().totalDownloads | number }}</li>
+        <li><span class="stat-label">Android</span>{{ app().minAndroid }}+</li>
+      </ul>
+
+      <div class="actions">
+        <a class="btn btn-accent btn-big" [href]="latest.apkUrl" download>
+          <span class="arrow" aria-hidden="true">▼</span> Download
+        </a>
+        @if (showDetailsLink()) {
+          <a class="btn" [routerLink]="['/apps', app().id]">Details &amp; install help</a>
+        }
+      </div>
+    } @else {
+      <p class="no-builds">No builds yet. Check back soon.</p>
+    }
+  </div>
+</section>

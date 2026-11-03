@@ -1,53 +1,166 @@
-// Angular Material theme. Learn more at https://material.angular.dev/guide/theming
+// Dark "blocky" theme matching the games' own UI: flat block faces with a dark edge, a lighter
+// top band, a darker lip below and a hard shadow. Corners stay small; no gloss or soft glows.
 @use '@angular/material' as mat;
+
+:root {
+  --bg: #171a1c;
+  --bg-tile: #1c1f22;
+  --panel: #21242b;
+  --panel-raised: #2a2e37;
+  --button: #404757;
+  --accent: #ffa61a;
+  --accent-deep: #e6801a;
+  --accent-top: #ffc561;
+  --blue: #3f74e6;
+  --blue-top: #6d9bff;
+  --text: #f2f2fa;
+  --text-dim: #b8bdc7;
+  --edge: #0a0d12;
+  --good: #66f273;
+  --gold: #ffd140;
+  --pixel-font: 'Silkscreen', 'Courier New', monospace;
+  --body-font: 'Inter', system-ui, sans-serif;
+  --radius: 4px;
+  --shadow: 6px 6px 0 rgb(0 0 0 / 45%);
+
+  color-scheme: dark;
+}
 
 html {
   height: 100%;
   @include mat.theme(
     (
       color: (
-        primary: mat.$violet-palette,
-        tertiary: mat.$magenta-palette,
+        theme-type: dark,
+        primary: mat.$orange-palette,
+        tertiary: mat.$blue-palette,
       ),
-      typography: Roboto,
+      typography: Inter,
       density: 0,
     )
   );
 }
 
 body {
-  // Follow the visitor's system light/dark setting.
-  color-scheme: light dark;
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
   margin: 0;
-  height: 100%;
+  min-height: 100%;
+  color: var(--text);
+  font: 400 16px/1.55 var(--body-font);
+  // The same dark slate checkerboard as the app icon's background.
+  background-color: var(--bg);
+  background-image: conic-gradient(
+    var(--bg-tile) 25%,
+    transparent 0 50%,
+    var(--bg-tile) 0 75%,
+    transparent 0
+  );
+  background-size: 64px 64px;
 }
 
-h1 {
-  font: var(--mat-sys-headline-medium);
+h1,
+h2,
+h3 {
+  font-family: var(--pixel-font);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin: 0;
+  text-transform: uppercase;
 }
 
 h2 {
-  font: var(--mat-sys-title-large);
-  margin-top: 32px;
+  color: var(--accent);
+  font-size: 20px;
+  margin-bottom: 14px;
 }
 
 a {
-  color: var(--mat-sys-primary);
+  color: var(--accent-top);
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }
 
 .page {
   box-sizing: border-box;
   margin-inline: auto;
-  max-width: 960px;
+  max-width: 1040px;
   padding-inline: 16px;
   width: 100%;
 }
 
+// A raised block panel. The orange strip along the top is the games' panel accent.
+.block {
+  background: var(--panel);
+  border: 3px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 4px 0 var(--accent),
+    var(--shadow);
+  padding: 22px 20px 20px;
+}
+
+// Buttons sink onto their lip when pressed instead of shrinking.
+.btn {
+  align-items: center;
+  background: var(--button);
+  border: 3px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 4px 0 rgb(255 255 255 / 18%),
+    0 6px 0 color-mix(in srgb, var(--button) 55%, black);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  font: 700 15px/1 var(--pixel-font);
+  gap: 10px;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  min-height: 48px;
+  padding: 0 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateY(0);
+  transition:
+    transform 60ms,
+    box-shadow 60ms,
+    filter 60ms;
+
+  &:hover {
+    filter: brightness(1.12);
+  }
+
+  &:active {
+    box-shadow:
+      inset 0 4px 0 rgb(255 255 255 / 18%),
+      0 1px 0 color-mix(in srgb, var(--button) 55%, black);
+    transform: translateY(5px);
+  }
+}
+
+.btn-accent {
+  --button: var(--accent-deep);
+  color: var(--edge);
+}
+
+.btn-big {
+  font-size: 20px;
+  min-height: 60px;
+  padding: 0 28px;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+.muted {
+  color: var(--text-dim);
+}
+
 .error {
-  color: var(--mat-sys-error);
+  color: #f24026;
 }
 
 .visually-hidden {
@@ -57,4 +170,10 @@ a {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }

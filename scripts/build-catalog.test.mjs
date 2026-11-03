@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { sortAndPickLatest, toRelease, validateCatalog } from './build-catalog.mjs';
+import { sortAndPickLatest, toRelease, totalDownloads, validateCatalog } from './build-catalog.mjs';
 
 function githubRelease(overrides = {}) {
   return {
@@ -13,6 +13,7 @@ function githubRelease(overrides = {}) {
       {
         name: 'mobfighter-1.2.3.apk',
         size: 1234,
+        download_count: 7,
         browser_download_url: 'https://example.com/mobfighter-1.2.3.apk',
         digest: 'sha256:abc123',
       },
@@ -32,6 +33,7 @@ describe('toRelease', () => {
       apkName: 'mobfighter-1.2.3.apk',
       apkUrl: 'https://example.com/mobfighter-1.2.3.apk',
       sizeBytes: 1234,
+      downloads: 7,
       sha256: 'abc123',
     });
   });
@@ -50,6 +52,19 @@ describe('toRelease', () => {
     const release = githubRelease();
     delete release.assets[0].digest;
     assert.equal(toRelease('mobfighter', release).sha256, null);
+  });
+});
+
+describe('totalDownloads', () => {
+  it('adds up every version and treats none as zero', () => {
+    assert.equal(totalDownloads([{ downloads: 3 }, { downloads: 4 }]), 7);
+    assert.equal(totalDownloads([]), 0);
+  });
+
+  it('counts a missing download_count as zero', () => {
+    const release = githubRelease();
+    delete release.assets[0].download_count;
+    assert.equal(toRelease('mobfighter', release).downloads, 0);
   });
 });
 
@@ -90,5 +105,6 @@ describe('validateCatalog', () => {
     assert.throws(() => validateCatalog([{ ...app, id: 'MobFighter' }]), /lowercase/);
     assert.throws(() => validateCatalog([app, app]), /Duplicate/);
     assert.throws(() => validateCatalog([{ ...app, name: '' }]), /missing "name"/);
+    assert.throws(() => validateCatalog([{ ...app, tagline: 5 }]), /tagline/);
   });
 });

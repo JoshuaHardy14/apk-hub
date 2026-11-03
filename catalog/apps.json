@@ -2,8 +2,9 @@
   {
     "id": "mobfighter",
     "name": "MobFighter",
-    "description": "A Unity game for Android.",
-    "icon": "icons/mobfighter.svg",
+    "tagline": "Fight your way through seven blocky worlds.",
+    "description": "A blocky third-person action game. Pick one of five fighters (Swordsman, Mage, Archer, Brawler or Druid), battle slimes, beasts and bosses across 49 levels, and build each run with power-up cards. Beat the final world, then keep going in Endless mode.",
+    "icon": "icons/mobfighter.png",
     "minAndroid": "7.1"
   }
 ]

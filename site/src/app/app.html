@@ -1,11 +1,20 @@
-<mat-toolbar>
-  <div class="page">
-    <a class="brand" routerLink="/">APK Hub</a>
+<header class="header">
+  <div class="page header-inner">
+    <a class="brand" routerLink="/" aria-label="APK Hub home">
+      <span class="brand-mark" aria-hidden="true">APK</span>
+      <span class="brand-word">HUB</span>
+    </a>
+    <span class="tag muted">Android games by Crafty Caps</span>
   </div>
-</mat-toolbar>
+</header>
 
 <main class="page">
   <router-outlet />
 </main>
 
-<footer class="page footer">Builds are published automatically from GitHub. Android only.</footer>
+<footer class="footer">
+  <div class="page footer-inner">
+    <span>Builds go live here automatically when they're released.</span>
+    <span class="muted">Android only · Not affiliated with Google Play</span>
+  </div>
+</footer>

@@ -10,6 +10,7 @@ export interface Release {
   apkName: string;
   apkUrl: string;
   sizeBytes: number;
+  downloads: number;
   sha256: string | null;
 }
 
@@ -17,10 +18,12 @@ export interface Release {
 export interface AppEntry {
   id: string;
   name: string;
+  tagline?: string;
   description: string;
   icon: string;
   minAndroid: string;
   releaseCount: number;
+  totalDownloads: number;
   latest: Release | null;
 }
 

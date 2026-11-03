@@ -6,6 +6,9 @@ on:
   # Releases start this via release-redeploy.yml. Deploys must run on main: a Pages
   # deployment from a release's tag ref reports success but never goes live.
   workflow_dispatch:
+  # Daily, so download counts stay current between releases.
+  schedule:
+    - cron: '17 4 * * *'
 
 permissions:
   contents: read

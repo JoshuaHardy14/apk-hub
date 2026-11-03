@@ -1,78 +1,99 @@
-<a mat-button routerLink="/">← All apps</a>
+<a class="back" routerLink="/">◀ All games</a>
 
 @if (app(); as app) {
-  <header class="header">
-    <img class="icon" [src]="app.icon" alt="" width="96" height="96" />
-    <div>
-      <h1>{{ app.name }}</h1>
-      <p>{{ app.description }}</p>
-      <p class="muted">Requires Android {{ app.minAndroid }} or newer</p>
-    </div>
-  </header>
+  <app-app-hero [app]="app" />
 
   @if (app.latest; as latest) {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <a mat-flat-button class="download" [href]="latest.apkUrl" download>
-          Download v{{ latest.version }}
-        </a>
-        <dl class="facts">
-          <dt>Size</dt>
-          <dd>{{ latest.sizeBytes | fileSize }}</dd>
-          <dt>Released</dt>
-          <dd>{{ latest.publishedAt | date: 'mediumDate' }}</dd>
-          <dt>File</dt>
-          <dd>{{ latest.apkName }}</dd>
-          @if (latest.sha256) {
-            <dt>SHA-256</dt>
-            <dd class="hash">{{ latest.sha256 }}</dd>
-          }
-        </dl>
-        @if (latest.notes) {
-          <h2>What's new</h2>
-          <p class="notes">{{ latest.notes }}</p>
-        }
-      </mat-card-content>
-    </mat-card>
-  } @else {
-    <p>No builds have been published yet. Check back soon.</p>
+    <div class="columns">
+      <div class="main-column">
+        <section class="block">
+          <h2>What's new in {{ latest.version }}</h2>
+          <app-release-notes [notes]="latest.notes" />
+        </section>
+
+        <section class="block">
+          <app-install-help />
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="block share">
+          <h2>Get it on your phone</h2>
+          <app-qr-code [url]="pageUrl()" [label]="'QR code for the ' + app.name + ' page'" />
+          <p class="muted small">Scan with your phone's camera to open this page.</p>
+
+          <h3 class="link-heading">Always-latest link</h3>
+          <p class="link-box">{{ latestUrl() }}</p>
+          <button class="btn copy" type="button" (click)="copyLatestLink()">
+            {{ copied() ? 'Copied!' : 'Copy link' }}
+          </button>
+          <span class="visually-hidden" aria-live="polite">{{
+            copied() ? 'Link copied' : ''
+          }}</span>
+        </section>
+
+        <section class="block">
+          <h2>File details</h2>
+          <dl class="facts">
+            <dt>File</dt>
+            <dd>{{ latest.apkName }}</dd>
+            <dt>Size</dt>
+            <dd>{{ latest.sizeBytes | fileSize }}</dd>
+            <dt>Released</dt>
+            <dd>{{ latest.publishedAt | date: 'd MMM y, HH:mm' }}</dd>
+            @if (latest.sha256) {
+              <dt>SHA-256</dt>
+              <dd class="hash">{{ latest.sha256 }}</dd>
+            }
+          </dl>
+        </section>
+      </aside>
+    </div>
   }
 
   @if (releases().length > 0) {
-    <h2>All versions</h2>
-    <div class="table-scroll">
-      <table class="history">
-        <thead>
-          <tr>
-            <th>Version</th>
-            <th>Released</th>
-            <th>Size</th>
-            <th><span class="visually-hidden">Download</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (release of releases(); track release.tag) {
+    <section class="block history-block">
+      <h2>All versions</h2>
+      <div class="table-scroll">
+        <table class="history">
+          <thead>
             <tr>
-              <td>
-                {{ release.version }}
-                @if (release.prerelease) {
-                  <span class="badge">pre-release</span>
-                }
-              </td>
-              <td>{{ release.publishedAt | date: 'mediumDate' }}</td>
-              <td>{{ release.sizeBytes | fileSize }}</td>
-              <td><a [href]="release.apkUrl" download>Download</a></td>
+              <th>Version</th>
+              <th>Released</th>
+              <th class="col-size">Size</th>
+              <th>Downloads</th>
+              <th><span class="visually-hidden">Download</span></th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            @for (release of releases(); track release.tag) {
+              <tr [class.current]="release.tag === app.latest?.tag">
+                <td class="version">
+                  {{ release.version }}
+                  @if (release.tag === app.latest?.tag) {
+                    <span class="badge">Latest</span>
+                  } @else if (release.prerelease) {
+                    <span class="badge badge-dim">Pre-release</span>
+                  }
+                </td>
+                <td>{{ release.publishedAt | date: 'd MMM y' }}</td>
+                <td class="col-size">{{ release.sizeBytes | fileSize }}</td>
+                <td>{{ release.downloads | number }}</td>
+                <td><a [href]="release.apkUrl" download>Download</a></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
   }
 } @else if (catalog.appsFile.hasValue()) {
-  <h1>App not found</h1>
-  <p>There's no app called "{{ id() }}". <a routerLink="/">See all apps</a>.</p>
+  <section class="block">
+    <h1>Game not found</h1>
+    <p>There's no game called "{{ id() }}". <a routerLink="/">See all games</a>.</p>
+  </section>
 } @else if (catalog.appsFile.error()) {
-  <p class="error">Couldn't load this app. Try refreshing the page.</p>
+  <p class="error">Couldn't load this game. Try refreshing the page.</p>
 } @else {
   <mat-progress-bar mode="indeterminate" />
 }
