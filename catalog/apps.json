@@ -6,5 +6,13 @@
     "description": "A blocky third-person action game. Pick one of five fighters (Swordsman, Mage, Archer, Brawler or Druid), battle slimes, beasts and bosses across 49 levels, and build each run with power-up cards. Beat the final world, then keep going in Endless mode.",
     "icon": "icons/mobfighter.png",
     "minAndroid": "7.1"
+  },
+  {
+    "id": "tensecondjumper",
+    "name": "Ten Second Jumper",
+    "tagline": "Clear every level before the clock runs out.",
+    "description": "A fast, cute, blocky 2D platformer. Every level is a single screen with a ten second clock. Clear it and the next one starts at once.",
+    "icon": "icons/tensecondjumper.svg",
+    "minAndroid": "7.1"
   }
 ]
