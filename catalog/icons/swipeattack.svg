@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" shape-rendering="crispEdges">
+  <rect width="128" height="128" fill="#8bb8e8"/>
+  <rect x="0" y="0" width="32" height="32" fill="#5cc03f"/><rect x="64" y="0" width="32" height="32" fill="#5cc03f"/>
+  <rect x="32" y="32" width="32" height="32" fill="#5cc03f"/><rect x="96" y="32" width="32" height="32" fill="#5cc03f"/>
+  <rect x="0" y="64" width="32" height="32" fill="#5cc03f"/><rect x="64" y="64" width="32" height="32" fill="#5cc03f"/>
+  <rect x="32" y="96" width="32" height="32" fill="#5cc03f"/><rect x="96" y="96" width="32" height="32" fill="#5cc03f"/>
+  <rect x="32" y="0" width="32" height="32" fill="#8a5a2b"/><rect x="96" y="0" width="32" height="32" fill="#8a5a2b"/>
+  <rect x="0" y="32" width="32" height="32" fill="#8a5a2b"/><rect x="64" y="32" width="32" height="32" fill="#8a5a2b"/>
+  <rect x="32" y="64" width="32" height="32" fill="#8a5a2b"/><rect x="96" y="64" width="32" height="32" fill="#8a5a2b"/>
+  <rect x="0" y="96" width="32" height="32" fill="#8a5a2b"/><rect x="64" y="96" width="32" height="32" fill="#8a5a2b"/>
+  <rect x="20" y="52" width="24" height="24" fill="#ff8c1f" stroke="#0f0f17" stroke-width="4"/>
+  <path d="M52 64h44M84 50l16 14-16 14" stroke="#0f0f17" stroke-width="8" fill="none"/>
+</svg>

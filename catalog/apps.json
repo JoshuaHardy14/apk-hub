@@ -14,5 +14,13 @@
     "description": "A fast, cute, blocky 2D platformer. Every level is a single screen with a ten second clock. Clear it and the next one starts at once.",
     "icon": "icons/tensecondjumper.svg",
     "minAndroid": "7.1"
+  },
+  {
+    "id": "swipeattack",
+    "name": "Swipe Attack",
+    "tagline": "Swipe to the goal before the enemies catch you.",
+    "description": "A top-down, turn-by-turn game on a chess-board grid. Each round, swipe a direction to move one tile while the enemies move at the same time. Read their arrows, keep to the beat, and reach the goal on the far side.",
+    "icon": "icons/swipeattack.svg",
+    "minAndroid": "7.1"
   }
 ]
