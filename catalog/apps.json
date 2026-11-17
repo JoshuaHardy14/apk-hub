@@ -22,5 +22,13 @@
     "description": "A top-down, turn-by-turn game on a chess-board grid. Each round, swipe a direction to move one tile while the enemies move at the same time. Read their arrows, keep to the beat, and reach the goal on the far side.",
     "icon": "icons/swipeattack.svg",
     "minAndroid": "7.1"
+  },
+  {
+    "id": "sereveiltcg",
+    "name": "Sere Veil TCG",
+    "tagline": "Collect monsters and battle them in a pixel-art card game.",
+    "description": "A 2D trading card game set in the world of Sere Veil. Build a deck of Fire, Ice, Electric and Wind monsters, play them onto the board and outplay your opponent, all in Sere Veil's monochrome pixel-art style.",
+    "icon": "icons/sereveiltcg.svg",
+    "minAndroid": "7.1"
   }
 ]
